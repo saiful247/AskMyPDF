@@ -2,6 +2,10 @@
 
 🚀 **Built for SLIIT students & beyond!** This **Retrieval-Augmented Generation (RAG) chatbot** allows users to upload PDFs and ask AI-powered questions while ensuring answers are **aligned with their specific documents**.
 
+![Project Image](pic/1.png)
+![Project Image](pic/2.png)
+![Project Image](pic/3.png)
+
 ---
 
 ## 📌 Why This Project?
