@@ -3,7 +3,7 @@ import streamlit as st
 import time
 from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.chains.question_answering import load_qa_chain
@@ -12,21 +12,18 @@ import requests
 from google.cloud import vision
 from PIL import Image
 from io import BytesIO
+from google.oauth2 import service_account
+import json
 
 # Load environment variables
 load_dotenv()
 
-# Initialize Google Gemini LLM
-google_api_key = os.getenv("GOOGLE_API_KEY")
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.6)
+# Load Google Vision API Credentials from Streamlit Secrets
+credentials_dict = json.loads(st.secrets["GOOGLE_VISION_CREDENTIALS"])
+credentials = service_account.Credentials.from_service_account_info(
+    credentials_dict)
 
-# Google Vision API Setup
-credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-if not credentials_path:
-    raise ValueError("GOOGLE_APPLICATION_CREDENTIALS is not set in .env file!")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-
-client = vision.ImageAnnotatorClient()
+client = vision.ImageAnnotatorClient(credentials=credentials)
 
 
 def extract_text_from_image(image_source):
