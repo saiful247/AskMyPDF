@@ -12,13 +12,17 @@ import requests
 from google.cloud import vision
 from PIL import Image
 from io import BytesIO
-from google.oauth2 import service_account
 import json
+from google.oauth2 import service_account
 
 # Load environment variables
 load_dotenv()
 
-# Load Google Vision API Credentials from Streamlit Secrets
+# Initialize Google Gemini LLM
+google_api_key = st.secrets["GOOGLE_API_KEY"]
+os.environ["GOOGLE_API_KEY"] = google_api_key
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.6)
+
 credentials_dict = json.loads(st.secrets["GOOGLE_VISION_CREDENTIALS"])
 credentials = service_account.Credentials.from_service_account_info(
     credentials_dict)
